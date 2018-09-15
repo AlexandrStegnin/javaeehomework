@@ -1,0 +1,25 @@
+.menu {
+    text-align: center;
+    background: black;
+    margin-bottom: 10px;
+    margin-top: 1px;
+}
+.menu a {
+    display: inline-block;
+    color: white;
+    padding: 14px 25px;
+    text-align: center;
+    text-decoration: none;
+    background-color: #292929;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    border: 1px solid black;
+}
+.menu a:hover {
+    color: #2c5704;
+    border-color: #2c5704;
+}
+h1 {
+    text-align: center;
+}
