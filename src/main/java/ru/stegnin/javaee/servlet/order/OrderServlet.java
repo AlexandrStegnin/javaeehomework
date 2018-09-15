@@ -1,6 +1,6 @@
-package ru.stegnin.javaee.servlet;
+package ru.stegnin.javaee.servlet.order;
 
-import ru.stegnin.javaee.support.GenerateHtml;
+import ru.stegnin.javaee.support.Constants;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -9,11 +9,16 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet(name = "Order", urlPatterns = "/order")
+@WebServlet(name = "OrderSuccess", urlPatterns = "/order-success")
 public class OrderServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        GenerateHtml.generatePage(resp, "Заказ");
+        req.getRequestDispatcher(Constants.DISPATCHER_PREFIX + "order-success.jsp").forward(req, resp);
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        doGet(req, resp);
     }
 }

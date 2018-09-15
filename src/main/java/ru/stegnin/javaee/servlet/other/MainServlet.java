@@ -1,6 +1,6 @@
-package ru.stegnin.javaee.servlet;
+package ru.stegnin.javaee.servlet.other;
 
-import ru.stegnin.javaee.support.GenerateHtml;
+import ru.stegnin.javaee.support.Constants;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -14,6 +14,11 @@ public class MainServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        GenerateHtml.generatePage(resp, "Главная");
+        req.getRequestDispatcher(Constants.DISPATCHER_PREFIX + "index.jsp").forward(req, resp);
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        doGet(req, resp);
     }
 }
