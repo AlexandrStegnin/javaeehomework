@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+<h:head>
+</h:head>
+<h:body>
+    <ui:include src="header.xhtml"/>
+    <br/>
+    <br/>
+    <h:form>
+        <p:panel header="Добавить тэг">
+            <p:messages/>
+            <h:panelGrid columns="3" cellpadding="5">
+                <h:outputLabel for="tname" value="Название:" />
+                <p:inputText value="#{tagAddController.tag.name}" id="tname" label="Name"/>
+                <p:message for="tname"/>
+                <h:outputText value="#{tagAddController.tag.name}"/>
+            </h:panelGrid>
+            <p:commandButton ajax="false" action="#{tagAddController.save()}" value="Создать" validateClient="true"/>
+        </p:panel>
+    </h:form>
+</h:body>
+</html>
