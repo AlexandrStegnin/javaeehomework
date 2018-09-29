@@ -6,11 +6,13 @@ import ru.stegnin.javaee.repository.ProductRepository;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Named;
 import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.Map;
 
+@Named
 @ApplicationScoped
 public class ProductService implements ProductRepository {
 
@@ -20,15 +22,42 @@ public class ProductService implements ProductRepository {
     @PostConstruct
     private void init() {
         Collection<Product> products = new LinkedHashSet<>();
-        products.add(new Product("Футболка", 299d));
-        products.add(new Product("Шорты", 259d));
-        products.add(new Product("Майка", 99d));
-        products.add(new Product("Кросовки", 579d));
-        products.add(new Product("Сапоги", 1299d));
-        products.add(new Product("Куртка", 2999d));
-        products.add(new Product("Пальто", 1329d));
-        products.add(new Product("Штаны", 789d));
-        products.add(new Product("Сандали", 239d));
+        products.add(new Product.Builder()
+                .withName("Футболка")
+                .withPrice(299d)
+                .build());
+        products.add(new Product.Builder()
+                .withName("Шорты")
+                .withPrice(259d)
+                .build());
+        products.add(new Product.Builder()
+                .withName("Майка")
+                .withPrice(99d)
+                .build());
+        products.add(new Product.Builder()
+                .withName("Кросовки")
+                .withPrice(579d)
+                .build());
+        products.add(new Product.Builder()
+                .withName("Сапоги")
+                .withPrice(1299d)
+                .build());
+        products.add(new Product.Builder()
+                .withName("Куртка")
+                .withPrice(2999d)
+                .build());
+        products.add(new Product.Builder()
+                .withName("Пальто")
+                .withPrice(1329d)
+                .build());
+        products.add(new Product.Builder()
+                .withName("Штаны")
+                .withPrice(789d)
+                .build());
+        products.add(new Product.Builder()
+                .withName("Сандали")
+                .withPrice(239d)
+                .build());
         saveAll(products);
     }
 
