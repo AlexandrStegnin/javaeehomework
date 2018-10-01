@@ -8,49 +8,69 @@
 <h:head>
 </h:head>
 <h:body>
-    <ui:include src="header.xhtml" />
-    <f:view>
-        <h:form id="form">
-            <p:growl id="msgs" showDetail="true"/>
-            <p:dataTable var="product" value="#{catalogController.products}" rowIndexVar="idx" editable="true">
-                <f:facet name="header">
-                    Товары
-                </f:facet>
-                <p:ajax event="rowEdit" listener="#{catalogController.onRowEdit}" update=":form:msgs"/>
-                <p:ajax event="rowEditCancel" listener="#{catalogController.onRowCancel}" update=":form:msgs"/>
-                <p:column headerText="№">
-                    <h:outputText value="#{idx + 1}"/>
-                </p:column>
-                <p:column headerText="Название">
-                    <p:cellEditor>
-                        <f:facet name="output"><h:outputText value="#{product.name}"/></f:facet>
-                        <f:facet name="input"><p:inputText value="#{product.name}" style="width:100%"/></f:facet>
-                    </p:cellEditor>
-                </p:column>
-                <p:column headerText="Описание">
-                    <p:cellEditor>
-                        <f:facet name="output"><h:outputText value="#{product.description}"/></f:facet>
-                        <f:facet name="input"><p:inputText value="#{product.description}" style="width:100%"/></f:facet>
-                    </p:cellEditor>
-                </p:column>
-                <p:column headerText="Цена">
-                    <p:cellEditor>
-                        <f:facet name="output"><h:outputText value="#{product.price}"/></f:facet>
-                        <f:facet name="input"><p:inputText value="#{product.price}" style="width:100%"/></f:facet>
-                    </p:cellEditor>
-                </p:column>
-                <p:column style="width: 32px">
-                    <p:rowEditor/>
-                </p:column>
-                <p:column style="width: 32px">
-                    <p:commandButton icon="ui-icon-trash" styleClass="ui-btn"
-                                     title="Удалить тэг"
-                                     actionListener="#{catalogController.productRepository.delete(product.id)}"
-                                     ajax="false"/>
-                </p:column>
-            </p:dataTable>
-            <p:commandButton style="margin-top: 10px" action="product-add" outcome="product-add" value="Добавить товар"/>
-        </h:form>
-    </f:view>
+    <ui:include src="header.xhtml"/>
+    <h:form id="form">
+        <p:growl id="msgs" showDetail="true"/>
+        <p:dataTable id="products" var="product" value="#{catalogController.products}" rowIndexVar="idx"
+                     editable="true">
+            <f:facet name="header">
+                Товары
+            </f:facet>
+            <p:ajax event="rowEdit" listener="#{catalogController.onRowEdit}" update="@this :form:msgs"
+                    immediate="true"/>
+            <p:column headerText="№">
+                <h:outputText value="#{idx + 1}"/>
+            </p:column>
+            <p:column headerText="Название">
+                <p:cellEditor>
+                    <f:facet name="output">
+                        <h:outputText value="#{product.name}"/>
+                    </f:facet>
+                    <f:facet name="input">
+                        <p:inputText value="#{product.name}" style="width:100%" label="Name"/>
+                    </f:facet>
+                </p:cellEditor>
+            </p:column>
+            <p:column headerText="Описание">
+                <p:cellEditor>
+                    <f:facet name="output">
+                        <h:outputText value="#{product.description}"/>
+                    </f:facet>
+                    <f:facet name="input">
+                        <p:inputText value="#{product.description}" style="width:100%" label="Description"/>
+                    </f:facet>
+                </p:cellEditor>
+            </p:column>
+            <p:column headerText="Цена">
+                <p:cellEditor>
+                    <f:facet name="output">
+                        <h:outputText value="#{product.price}"/>
+                    </f:facet>
+                    <f:facet name="input">
+                        <p:inputText value="#{product.price}" style="width:100%" label="Price"/>
+                    </f:facet>
+                </p:cellEditor>
+            </p:column>
+            <p:column style="width: 32px">
+                <p:commandButton icon="ui-icon-trash" styleClass="ui-btn"
+                                 title="Удалить продукт"
+                                 action="#{catalogController.delete()}"
+                                 actionListener="#{catalogController.attrListener}"
+                                 ajax="false">
+                    <f:attribute name="productId" value="#{product.id}" />
+                </p:commandButton>
+            </p:column>
+            <p:column style="width: 32px">
+                <p:commandButton style="margin-top: 10px" icon="fa fa-fw fa-edit"
+                                 action="product-edit"
+                                 actionListener="#{productEditController.attrListener}"
+                                 outcome="product-edit">
+                    <f:attribute name="productId" value="#{product.id}" />
+                </p:commandButton>
+            </p:column>
+        </p:dataTable>
+        <p:commandButton style="margin-top: 10px" action="product-add" outcome="product-add" value="Добавить товар">
+        </p:commandButton>
+    </h:form>
 </h:body>
 </html>

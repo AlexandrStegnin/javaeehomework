@@ -8,7 +8,7 @@ public interface TagRepository {
     Collection<Tag> findAll();
     Tag findOne(String id);
 
-    void delete(String id);
+    void delete(Tag tag);
 
     void save(Tag tag);
 

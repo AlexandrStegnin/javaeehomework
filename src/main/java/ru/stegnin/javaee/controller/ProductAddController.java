@@ -5,15 +5,16 @@ import org.jetbrains.annotations.NotNull;
 import ru.stegnin.javaee.model.Product;
 import ru.stegnin.javaee.repository.ProductRepository;
 
-import javax.enterprise.context.SessionScoped;
+import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
 
 @Named
-@SessionScoped
+@RequestScoped
 @URLMapping(id = "product-add", pattern = "/product-add", viewId = "/WEB-INF/faces/product-add.xhtml")
-public class ProductController implements Serializable {
+public class ProductAddController implements Serializable {
+
     @Inject
     private ProductRepository productRepo;
 
