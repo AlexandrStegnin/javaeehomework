@@ -32,6 +32,10 @@
             <from-outcome>product-add</from-outcome>
             <to-view-id>/WEB-INF/faces/product-add.xhtml</to-view-id>
         </navigation-case>
+        <navigation-case>
+            <from-outcome>product-edit</from-outcome>
+            <to-view-id>/WEB-INF/faces/product-edit.xhtml</to-view-id>
+        </navigation-case>
     </navigation-rule>
 
 </faces-config>

@@ -1,93 +1,47 @@
 package ru.stegnin.javaee.service;
 
-import org.jetbrains.annotations.NotNull;
 import ru.stegnin.javaee.model.Product;
+import ru.stegnin.javaee.repository.AbstractRepository;
 import ru.stegnin.javaee.repository.ProductRepository;
 
-import javax.annotation.PostConstruct;
-import javax.enterprise.context.ApplicationScoped;
+import javax.ejb.Stateless;
 import javax.inject.Named;
 import java.util.Collection;
-import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
-import java.util.Map;
 
 @Named
-@ApplicationScoped
-public class ProductService implements ProductRepository {
-
-    @NotNull
-    private Map<String, Product> products = new LinkedHashMap<>();
-
-    @PostConstruct
-    private void init() {
-        Collection<Product> products = new LinkedHashSet<>();
-        products.add(new Product.Builder()
-                .withName("Футболка")
-                .withPrice(299d)
-                .build());
-        products.add(new Product.Builder()
-                .withName("Шорты")
-                .withPrice(259d)
-                .build());
-        products.add(new Product.Builder()
-                .withName("Майка")
-                .withPrice(99d)
-                .build());
-        products.add(new Product.Builder()
-                .withName("Кросовки")
-                .withPrice(579d)
-                .build());
-        products.add(new Product.Builder()
-                .withName("Сапоги")
-                .withPrice(1299d)
-                .build());
-        products.add(new Product.Builder()
-                .withName("Куртка")
-                .withPrice(2999d)
-                .build());
-        products.add(new Product.Builder()
-                .withName("Пальто")
-                .withPrice(1329d)
-                .build());
-        products.add(new Product.Builder()
-                .withName("Штаны")
-                .withPrice(789d)
-                .build());
-        products.add(new Product.Builder()
-                .withName("Сандали")
-                .withPrice(239d)
-                .build());
-        saveAll(products);
-    }
+@Stateless
+public class ProductService extends AbstractRepository implements ProductRepository {
 
     @Override
     public Collection<Product> findAll() {
-        return products.values();
+        return em.createQuery("SELECT p FROM Product p ORDER BY p.created DESC", Product.class).getResultList();
     }
 
     @Override
     public Product findOne(String id) {
-        return products.get(id);
+        return em.find(Product.class, id);
     }
 
     @Override
-    public void delete(String id) {
-        products.remove(id);
+    public void delete(Product product) {
+        em.remove(em.find(Product.class, product.getId()));
     }
 
     @Override
     public void save(Product product) {
-        products.putIfAbsent(product.getId(), product);
+        em.persist(product);
     }
 
     @Override
     public void saveAll(Collection<Product> productList) {
-        productList.forEach(pl -> products.putIfAbsent(pl.getId(), pl));
+        productList.forEach(pl -> em.persist(pl));
     }
 
     @Override
-    public void update(Product product) {
-        products.merge(product.getId(), product, (oldProduct, newProduct) -> newProduct);
+    public Product update(Product product) {
+        return em.merge(product);
     }
+
+
+
 }

@@ -23,7 +23,7 @@ public class ProductDeleteServlet extends HttpServlet {
             redirect(resp);
             return;
         }
-        productRepo.delete(productId);
+        productRepo.delete(productRepo.findOne(productId));
         redirect(resp);
     }
 

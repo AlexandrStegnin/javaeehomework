@@ -6,13 +6,14 @@ import java.util.Collection;
 
 public interface ProductRepository {
     Collection<Product> findAll();
+
     Product findOne(String id);
 
-    void delete(String id);
+    void delete(Product product);
 
     void save(Product product);
 
     void saveAll(Collection<Product> products);
 
-    void update(Product product);
+    Product update(Product product);
 }

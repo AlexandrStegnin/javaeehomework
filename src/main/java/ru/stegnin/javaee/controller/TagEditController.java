@@ -10,36 +10,36 @@ import javax.faces.event.ActionEvent;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
-import java.util.Collection;
 
 @Named
 @RequestScoped
-@URLMapping(id = "tag", pattern = "/tags", viewId = "WEB-INF/faces/tag.xhtml")
-public class TagController implements Serializable {
+@URLMapping(id = "tag-edit", pattern = "/tag-edit", viewId = "/WEB-INF/faces/tag-edit.xhtml")
+public class TagEditController implements Serializable {
     @Inject
     private TagRepository tagRepo;
 
-    public Collection<Tag> getTags() {
-        return tagRepo.findAll();
-    }
+    private Tag tag = new Tag();
 
-    private Tag tag;
-
-    public void delete() {
-        tagRepo.delete(tag);
-    }
-
-    @NotNull
     public Tag getTag() {
         return tag;
     }
 
-    public void setTag(@NotNull final String tagId) {
+    public void setTag(@NotNull String tagId) {
         this.tag = tagRepo.findOne(tagId);
+    }
+
+    @NotNull
+    public String update(Tag tag) {
+        tagRepo.update(tag);
+        return "tags";
     }
 
     public void attrListener(ActionEvent event){
         String tagId = (String) event.getComponent().getAttributes().get("tagId");
-        setTag(tagId);
+        tag = tagRepo.findOne(tagId);
+    }
+
+    public void delete() {
+        tagRepo.delete(tag);
     }
 }
