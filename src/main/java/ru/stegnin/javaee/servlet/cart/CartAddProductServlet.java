@@ -15,7 +15,7 @@ import java.io.IOException;
 
 @WebServlet(name = "AddToCart", urlPatterns = "/add-to-cart")
 public class CartAddProductServlet extends HttpServlet {
-    @Inject
+//    @Inject
     private CartRepository cartRepo;
 
     @Inject

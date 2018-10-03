@@ -3,7 +3,6 @@ package ru.stegnin.javaee.servlet.cart;
 import ru.stegnin.javaee.repository.CartRepository;
 import ru.stegnin.javaee.support.Constants;
 
-import javax.inject.Inject;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -13,7 +12,7 @@ import java.io.IOException;
 @WebServlet(name = "DeleteFromCart", urlPatterns = "/delete-from-cart")
 public class CartDeleteProductServlet extends HttpServlet {
 
-    @Inject
+//    @Inject
     private CartRepository cartRepo;
 
     @Override
@@ -23,7 +22,7 @@ public class CartDeleteProductServlet extends HttpServlet {
             redirect(resp);
             return;
         }
-        cartRepo.deleteProduct(productId);
+        cartRepo.deleteProduct(cartRepo.getAll().stream().filter(p -> p.getId().equalsIgnoreCase(productId)).findFirst().get());
         redirect(resp);
     }
 

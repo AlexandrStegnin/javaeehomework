@@ -5,10 +5,8 @@ import ru.stegnin.javaee.repository.AbstractRepository;
 import ru.stegnin.javaee.repository.ProductRepository;
 
 import javax.ejb.Stateless;
-import javax.inject.Named;
 import java.util.Collection;
 
-@Named
 @Stateless
 public class ProductService extends AbstractRepository implements ProductRepository {
 

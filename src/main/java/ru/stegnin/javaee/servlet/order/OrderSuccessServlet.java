@@ -4,7 +4,6 @@ import ru.stegnin.javaee.model.Product;
 import ru.stegnin.javaee.repository.CartRepository;
 import ru.stegnin.javaee.support.Constants;
 
-import javax.inject.Inject;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -16,7 +15,7 @@ import java.util.Collection;
 @WebServlet(name = "Order", urlPatterns = "/order")
 public class OrderSuccessServlet extends HttpServlet {
 
-    @Inject
+//    @Inject
     private CartRepository cartRepo;
 
     @Override

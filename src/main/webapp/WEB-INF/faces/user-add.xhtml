@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+<h:head>
+</h:head>
+<h:body>
+    <ui:include src="header.xhtml" />
+    <br/>
+    <br/>
+    <h:form>
+        <p:panel header="Добавить пользователя">
+            <p:messages/>
+            <h:panelGrid columns="3" cellpadding="5">
+                <h:outputLabel for="ulogin" value="Логин:" />
+                <h:inputText value="#{userAddController.user.login}" id="ulogin" label="Login"/>
+                <p:message for="ulogin"/>
+
+                <h:outputLabel for="uemail" value="Email:" />
+                <p:inputText value="#{userAddController.user.email}" id="uemail" label="Email"/>
+                <p:message for="uemail"/>
+
+                <h:outputLabel for="upass" value="Пароль:" />
+                <p:inputText value="#{userAddController.user.password}" id="upass" label="Password"/>
+                <p:message for="upass"/>
+
+            </h:panelGrid>
+            <p:commandButton ajax="false" action="#{userAddController.save()}" value="Создать" validateClient="true"/>
+        </p:panel>
+    </h:form>
+</h:body>
+</html>
