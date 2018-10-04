@@ -1,5 +1,8 @@
 package ru.stegnin.javaee.model;
 
+import com.fasterxml.jackson.annotation.JsonGetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonSetter;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -28,6 +31,7 @@ public class User extends AbstractEntity implements Serializable {
     private String email = "";
 
     @NotNull
+    @JsonIgnore
     @Column(nullable = false)
     private String password = "";
 

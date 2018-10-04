@@ -11,15 +11,17 @@ public interface UserRepository {
 
     void delete(User user);
 
-    void save(User user);
+    User save(User user);
 
-    void update(User user);
+    User update(User user);
 
     User findByLogin(String login);
 
     User findByEmail(String email);
 
     void init(String login, String email, String password);
+
+    User delete(String userId);
 
     boolean isLoginUnique(String login);
 

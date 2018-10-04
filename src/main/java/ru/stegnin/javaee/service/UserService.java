@@ -40,13 +40,13 @@ public class UserService extends AbstractRepository implements UserRepository {
     }
 
     @Override
-    public void save(User user) {
-        em.persist(user);
+    public User save(User user) {
+        return em.merge(user);
     }
 
     @Override
-    public void update(User user) {
-        em.merge(user);
+    public User update(User user) {
+        return em.merge(user);
     }
 
     @Nullable
@@ -110,5 +110,17 @@ public class UserService extends AbstractRepository implements UserRepository {
         criteriaQuery.select(builder.count(root));
         criteriaQuery.where(predicates.toArray(new Predicate[0]));
         return em.createQuery(criteriaQuery).getSingleResult();
+    }
+
+    @Override
+    @Nullable
+    public User delete(@NotNull String userId) {
+        User user = em.find(User.class, userId);
+        if (user != null) {
+            em.remove(user);
+            return user;
+        } else {
+            return null;
+        }
     }
 }
