@@ -3,11 +3,13 @@ package ru.stegnin.javaee.model;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.DecimalMax;
 import javax.validation.constraints.DecimalMin;
@@ -17,7 +19,10 @@ import java.util.List;
 
 @Data
 @Entity
+@ToString
 @NoArgsConstructor
+//@XmlRootElement(name = "product")
+//@XmlAccessorType(XmlAccessType.FIELD)
 @EqualsAndHashCode(callSuper = true)
 public class Product extends AbstractEntity implements Serializable {
 
@@ -42,7 +47,7 @@ public class Product extends AbstractEntity implements Serializable {
         this.price = price;
     }
 
-    @OneToMany(mappedBy = "product")
+    @OneToMany(mappedBy = "product", fetch = FetchType.EAGER)
     private List<Tag> tags;
 
     public static class Builder {
