@@ -1,9 +1,11 @@
 package ru.stegnin.javaee.model;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.Getter;
 import lombok.Setter;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import ru.stegnin.javaee.support.CustomDateSerializer;
 
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
@@ -22,9 +24,11 @@ public abstract class AbstractEntity {
     private String id = UUID.randomUUID().toString();
 
     @Nullable
+    @JsonSerialize(using = CustomDateSerializer.class)
     private LocalDate created;
 
     @Nullable
+    @JsonSerialize(using = CustomDateSerializer.class)
     private LocalDate updated;
 
     @PrePersist

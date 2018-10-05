@@ -9,9 +9,9 @@ public interface ProductRepository {
 
     Product findOne(String id);
 
-    void delete(Product product);
+    Product delete(String productId);
 
-    void save(Product product);
+    Product save(Product product);
 
     void saveAll(Collection<Product> products);
 

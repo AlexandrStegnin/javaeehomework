@@ -1,5 +1,7 @@
 package ru.stegnin.javaee.service;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import ru.stegnin.javaee.model.Product;
 import ru.stegnin.javaee.repository.AbstractRepository;
 import ru.stegnin.javaee.repository.ProductRepository;
@@ -20,14 +22,21 @@ public class ProductService extends AbstractRepository implements ProductReposit
         return em.find(Product.class, id);
     }
 
+    @Nullable
     @Override
-    public void delete(Product product) {
-        em.remove(em.find(Product.class, product.getId()));
+    public Product delete(@NotNull String productId) {
+        Product product = em.find(Product.class, productId);
+        if (product != null) {
+            em.remove(product);
+            return product;
+        } else {
+            return null;
+        }
     }
 
     @Override
-    public void save(Product product) {
-        em.persist(product);
+    public Product save(Product product) {
+        return em.merge(product);
     }
 
     @Override

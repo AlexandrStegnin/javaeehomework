@@ -35,7 +35,7 @@ public class CatalogController implements Serializable {
     }
 
     public void delete() {
-        productRepo.delete(product);
+        productRepo.delete(product.getId());
     }
 
     @NotNull
