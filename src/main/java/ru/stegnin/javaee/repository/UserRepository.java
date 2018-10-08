@@ -2,6 +2,7 @@ package ru.stegnin.javaee.repository;
 
 import ru.stegnin.javaee.model.User;
 
+import javax.ws.rs.core.UriInfo;
 import java.util.Collection;
 
 public interface UserRepository {
@@ -26,4 +27,8 @@ public interface UserRepository {
     boolean isLoginUnique(String login);
 
     boolean isEmailUnique(String email);
+
+    boolean check(String login, String password);
+
+    String generateToken(String login, UriInfo uriInfo);
 }

@@ -34,8 +34,8 @@ public class TagService extends AbstractRepository implements TagRepository {
     }
 
     @Override
-    public void save(Tag tag) {
-        em.persist(tag);
+    public Tag save(Tag tag) {
+        return em.merge(tag);
     }
 
     @Override
@@ -44,12 +44,18 @@ public class TagService extends AbstractRepository implements TagRepository {
     }
 
     @Override
-    public void update(Tag tag) {
-        em.merge(tag);
+    public Tag update(Tag tag) {
+        return em.merge(tag);
     }
 
     @Override
-    public void delete(Tag tag) {
-        em.remove(em.find(Tag.class, tag.getId()));
+    public Tag remove(String tagId) {
+        Tag tag = em.find(Tag.class, tagId);
+        if (tag != null) {
+            em.remove(tag);
+            return tag;
+        } else {
+            return null;
+        }
     }
 }

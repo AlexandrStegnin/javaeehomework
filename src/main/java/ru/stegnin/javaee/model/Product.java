@@ -1,54 +1,47 @@
 package ru.stegnin.javaee.model;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import javax.validation.constraints.DecimalMax;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
 @Entity
-@ToString
+@ToString(exclude = "tags")
 @NoArgsConstructor
-//@XmlRootElement(name = "product")
-//@XmlAccessorType(XmlAccessType.FIELD)
-@EqualsAndHashCode(callSuper = true)
+@EqualsAndHashCode(callSuper = true, exclude = "tags")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Product extends AbstractEntity implements Serializable {
 
-    @NotNull
-    @Size(min = 3, max = 10, message = "Название должно быть от 3 до 10 символов")
+    @Nullable
+    @Size(min = 3, max = 20, message = "Название должно быть от 3 до 20 символов")
     @Column(nullable = false)
-    private String name = "";
+    private String name;
 
-    @NotNull
+    @Nullable
     @DecimalMax(value= "99999.9", message = "Цена не должна превышать 99999.9")
     @DecimalMin(value = "0.1", message = "Цена не должна быть меньше 0.1")
     @Column(nullable = false)
-    private Double price = 0d;
+    private Double price;
 
     @Nullable
     @Size(min = 10, max = 100, message = "Описание должно быть от 10 до 100 символов")
     @Column
     private String description;
 
-    public Product(@NotNull String name, @NotNull Double price) {
-        this.name = name;
-        this.price = price;
-    }
-
-    @OneToMany(mappedBy = "product", fetch = FetchType.EAGER)
-    private List<Tag> tags;
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private List<Tag> tags = new ArrayList<>();
 
     public static class Builder {
         private Product newProduct;
@@ -74,6 +67,11 @@ public class Product extends AbstractEntity implements Serializable {
         public Product build() {
             return newProduct;
         }
+    }
+
+    public void setTags(List<Tag> tags) {
+        this.getTags().clear();
+        this.getTags().addAll(tags);
     }
 
 }
