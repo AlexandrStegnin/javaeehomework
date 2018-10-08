@@ -18,10 +18,9 @@ import java.util.UUID;
 @Setter
 @MappedSuperclass
 public abstract class AbstractEntity {
-
     @Id
     @NotNull
-    private String id = UUID.randomUUID().toString();
+    private String id = "";
 
     @Nullable
     @JsonSerialize(using = CustomDateSerializer.class)
@@ -33,6 +32,7 @@ public abstract class AbstractEntity {
 
     @PrePersist
     private void prePersist() {
+        id = UUID.randomUUID().toString().replace("-", "");
         created = LocalDate.now();
         updated = LocalDate.now();
     }

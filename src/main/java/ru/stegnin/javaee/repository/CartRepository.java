@@ -2,10 +2,8 @@ package ru.stegnin.javaee.repository;
 
 import ru.stegnin.javaee.model.Product;
 
-import javax.ejb.Local;
 import java.util.Collection;
 
-@Local
 public interface CartRepository {
 
     void deleteProduct(Product product);

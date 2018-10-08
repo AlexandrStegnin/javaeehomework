@@ -1,11 +1,15 @@
 package ru.stegnin.javaee.service;
 
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import ru.stegnin.javaee.model.User;
 import ru.stegnin.javaee.model.User_;
 import ru.stegnin.javaee.repository.AbstractRepository;
 import ru.stegnin.javaee.repository.UserRepository;
+import ru.stegnin.javaee.support.Constants;
+import ru.stegnin.javaee.util.PasswordUtils;
 
 import javax.ejb.Stateless;
 import javax.persistence.TypedQuery;
@@ -13,12 +17,20 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import javax.ws.rs.core.UriInfo;
+import java.security.Key;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
+import java.util.logging.Logger;
 
 @Stateless
 public class UserService extends AbstractRepository implements UserRepository {
+    private Logger logger = Logger.getLogger(UserService.class.getName());
+
     @Override
     public Collection<User> findAll() {
         CriteriaBuilder cb = em.getCriteriaBuilder();
@@ -46,16 +58,25 @@ public class UserService extends AbstractRepository implements UserRepository {
 
     @Override
     public User update(User user) {
+        User oldUser = em.find(User.class, user.getId());
+        if (user.getPassword().isEmpty()) {
+            user.setPassword(oldUser.getPassword());
+        } else {
+            user.setPassword(PasswordUtils.digestPassword(user.getPassword()));
+        }
+        if (user.getEmail().isEmpty()) {
+            user.setEmail(oldUser.getEmail());
+        }
         return em.merge(user);
     }
 
     @Nullable
     @Override
-    public User findByLogin(String login) {
+    public User findByLogin(@NotNull String login) {
         CriteriaBuilder builder = em.getCriteriaBuilder();
         CriteriaQuery<User> criteriaQuery = builder.createQuery(User.class);
         Root<User> root = criteriaQuery.from(User.class);
-        Predicate predicate = builder.like(root.get(User_.login), login);
+        Predicate predicate = builder.equal(root.get(User_.LOGIN), login);
         criteriaQuery.where(predicate);
         criteriaQuery.select(root);
         TypedQuery<User> query = em.createQuery(criteriaQuery);
@@ -122,5 +143,27 @@ public class UserService extends AbstractRepository implements UserRepository {
         } else {
             return null;
         }
+    }
+
+    @Override
+    public boolean check(@NotNull final String login, @NotNull final String password) {
+        if (login.isEmpty()) return false;
+        if (password.isEmpty()) return false;
+        final User user = findByLogin(login);
+        return user != null && user.getPassword().equals(PasswordUtils.digestPassword(password));
+    }
+
+    @Override
+    public String generateToken(@NotNull String login, @NotNull UriInfo uriInfo) {
+        Key key = keyGenerator.generateKey(Constants.KEY_GENERATOR);
+        String jwtToken = Jwts.builder()
+                .setSubject(login)
+                .setIssuer(uriInfo.getAbsolutePath().toString())
+                .setIssuedAt(new Date())
+                .setExpiration(Date.from(LocalDateTime.now().plusMinutes(15L).atZone(ZoneId.systemDefault()).toInstant()))
+                .signWith(SignatureAlgorithm.HS512, key)
+                .compact();
+        logger.info("#### generating token for a key : " + jwtToken + " - " + key);
+        return jwtToken;
     }
 }

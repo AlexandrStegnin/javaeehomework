@@ -1,27 +1,19 @@
 package ru.stegnin.javaee.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import org.jetbrains.annotations.NotNull;
+import ru.stegnin.javaee.util.PasswordUtils;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
+import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
 @Getter
 @Setter
 @ToString
-@XmlRootElement(name = "user")
-@XmlAccessorType(XmlAccessType.FIELD)
 @EqualsAndHashCode(callSuper = true)
 @Table(name = "AppUser")
 public class User extends AbstractEntity implements Serializable {
@@ -35,8 +27,6 @@ public class User extends AbstractEntity implements Serializable {
     private String email = "";
 
     @NotNull
-    @JsonIgnore
-    @XmlTransient
     @Column(nullable = false)
     private String password = "";
 
@@ -65,5 +55,10 @@ public class User extends AbstractEntity implements Serializable {
         public User build() {
             return newUser;
         }
+    }
+
+    @PrePersist
+    private void setPassword() {
+        if (!password.isEmpty()) password = PasswordUtils.digestPassword(password);
     }
 }

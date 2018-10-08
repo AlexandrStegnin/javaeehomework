@@ -8,11 +8,11 @@ public interface TagRepository {
     Collection<Tag> findAll();
     Tag findOne(String id);
 
-    void delete(Tag tag);
+    Tag remove(String tagId);
 
-    void save(Tag tag);
+    Tag save(Tag tag);
 
     void saveAll(Collection<Tag> tags);
 
-    void update(Tag tag);
+    Tag update(Tag tag);
 }

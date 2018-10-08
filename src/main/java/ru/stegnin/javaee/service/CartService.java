@@ -6,12 +6,12 @@ import ru.stegnin.javaee.repository.AbstractRepository;
 import ru.stegnin.javaee.repository.CartRepository;
 
 import javax.annotation.PostConstruct;
+import javax.ejb.Stateless;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-//@Stateful
-//@StatefulTimeout(value = 20)
+@Stateless
 public class CartService extends AbstractRepository implements CartRepository {
     @NotNull
     private List<Product> cart;

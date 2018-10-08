@@ -1,21 +1,30 @@
 package ru.stegnin.javaee.model;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.jetbrains.annotations.NotNull;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
+import javax.persistence.ManyToMany;
+import javax.persistence.PrePersist;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
+import java.util.List;
 
 
 @Data
 @Entity
+@ToString(exclude = "products")
 @NoArgsConstructor
-@EqualsAndHashCode(callSuper = true)
+@EqualsAndHashCode(callSuper = true, exclude = "products")
+@JsonIgnoreProperties(value = "products")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Tag extends AbstractEntity implements Serializable {
     private static final String PREFIX = "#";
 
@@ -24,8 +33,8 @@ public class Tag extends AbstractEntity implements Serializable {
     @Column(nullable = false)
     private String name = "";
 
-    @ManyToOne
-    private Product product;
+    @ManyToMany(mappedBy = "tags")
+    private List<Product> products;
 
     public static class Builder {
         private Tag newTag;
@@ -44,7 +53,8 @@ public class Tag extends AbstractEntity implements Serializable {
         }
     }
 
-    public void setName(String name) {
-        this.name = PREFIX + name;
+    @PrePersist
+    private void setName() {
+        if (!name.contains(PREFIX)) name = PREFIX + name;
     }
 }
