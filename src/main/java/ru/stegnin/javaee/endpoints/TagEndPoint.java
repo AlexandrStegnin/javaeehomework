@@ -1,5 +1,6 @@
 package ru.stegnin.javaee.endpoints;
 
+import ru.stegnin.javaee.filter.JWTTokenNeeded;
 import ru.stegnin.javaee.model.Tag;
 import ru.stegnin.javaee.repository.TagRepository;
 import ru.stegnin.javaee.support.Constants;
@@ -23,6 +24,7 @@ import static javax.ws.rs.core.Response.Status.NOT_FOUND;
 @Produces(APPLICATION_JSON)
 @Consumes(APPLICATION_JSON)
 @Transactional
+@JWTTokenNeeded
 public class TagEndPoint {
     @Context
     private UriInfo uriInfo;
