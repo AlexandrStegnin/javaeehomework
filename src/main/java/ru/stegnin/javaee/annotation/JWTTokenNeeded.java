@@ -1,4 +1,4 @@
-package ru.stegnin.javaee.filter;
+package ru.stegnin.javaee.annotation;
 
 import javax.ws.rs.NameBinding;
 import java.lang.annotation.Retention;

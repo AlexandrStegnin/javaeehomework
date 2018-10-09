@@ -1,6 +1,7 @@
 package ru.stegnin.javaee.filter;
 
 import io.jsonwebtoken.Jwts;
+import ru.stegnin.javaee.annotation.JWTTokenNeeded;
 import ru.stegnin.javaee.support.Constants;
 import ru.stegnin.javaee.util.KeyGenerator;
 import ru.stegnin.javaee.util.SimpleKeyGenerator;

@@ -1,6 +1,6 @@
 package ru.stegnin.javaee.endpoints;
 
-import ru.stegnin.javaee.filter.JWTTokenNeeded;
+import ru.stegnin.javaee.annotation.JWTTokenNeeded;
 import ru.stegnin.javaee.model.User;
 import ru.stegnin.javaee.repository.UserRepository;
 import ru.stegnin.javaee.support.Constants;
